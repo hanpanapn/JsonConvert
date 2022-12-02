@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+	<title>无标题文档</title>
+
+	<script src="./js/jquery-3.1.1.min.js"></script>
+	<script src="./js/jsoneditor.min.js"></script>
+	<script src="./js/layer.min.js"></script>
+	<link href="./js/layer.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="./js/jsoneditor.min.css">
+
+	<style>
+		.container {
+			display: flex;
+			justify-content: flex-start;
+			align-items: flex-start;
+		}
+
+		#btn {
+			margin: 5px;
+			margin-top: 100px;
+			color: blue;
+			border: 1px solid blue;
+			background: no-repeat;
+			border-radius: 3px;
+			padding: 7px 13px;
+			cursor: pointer;
+		}
+
+		#jsonStr {
+			width: 40%;
+			border: 1px solid #3883fa;
+			height: calc(100vh - 55px);
+		}
+
+		.jsonObj {
+			width: 44%;
+			border: 1px solid #ccc;
+			height: calc(100vh - 55px);
+		}
+
+		/* 设置滚动条的样式 */
+		::-webkit-scrollbar {
+			width: 30px;
+		}
+
+		/* 滚动槽 */
+		::-webkit-scrollbar-track {
+			-webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+			border-radius: 5px;
+		}
+
+		/* 滚动条滑块 */
+		::-webkit-scrollbar-thumb {
+			border-radius: 10px;
+			background: rgba(0, 0, 0, 0.4);
+			-webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+		}
+
+		::-webkit-scrollbar-thumb:window-inactive {
+			background: rgba(255, 0, 0, 0.4);
+		}
+	</style>
+</head>
+
+<body>
+
+	<div class="container">
+		<textarea id="jsonStr" cols="50" rows="50"></textarea>
+
+		<button id="btn">格式化</button>
+		<div id="jsoneditor" class="jsonObj"></div>
+
+		<script>
+			// create the editor
+			const container = document.getElementById("jsoneditor")
+			const options = {
+				mode: 'view',
+			}
+			const editor = new JSONEditor(container, options)
+			// set json
+			const initialJson = {}
+			editor.set(initialJson)
+
+
+
+
+			let btn = document.getElementById('btn')
+			let jsonStr = document.getElementById('jsonStr')
+
+			let jsonObj = document.getElementById('jsonObj')
+			btn.onclick = () => {
+				try {
+					console.log('jsonStr.value', JSON.parse(jsonStr.value));
+					let a = jsonConvert(JSON.parse(jsonStr.value));
+					editor.set(a)
+				} catch (error) {
+					layer.tips('JSON转换失败', '#jsonStr')
+					editor.set({})
+				}
+
+			}
+
+
+			let jsonConvert = (j) => {
+				console.log(3);
+				Object.keys(j).forEach(key => {
+					if (typeof j[key] == 'string') {
+						try {
+							j[key] = JSON.parse(j[key])
+						} catch (error) {
+						}
+
+					}
+				})
+				return j
+			}
+			jsonStr.value = localStorage.getItem('jsonStr')
+
+			btn.click()
+			$(function () {
+				$('#jsonStr').bind('input propertychange', function () {
+					localStorage.setItem('jsonStr', jsonStr.value)
+
+					btn.click()
+				})
+			})
+		</script>
+	</div>
+</body>
+
+</html>
