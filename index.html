@@ -43,24 +43,34 @@
 
 		/* 设置滚动条的样式 */
 		::-webkit-scrollbar {
-			width: 30px;
+			width: 12px;
+
 		}
 
 		/* 滚动槽 */
 		::-webkit-scrollbar-track {
-			-webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+			-webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.13);
 			border-radius: 5px;
 		}
 
 		/* 滚动条滑块 */
 		::-webkit-scrollbar-thumb {
 			border-radius: 10px;
-			background: rgba(0, 0, 0, 0.4);
-			-webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.5);
+			background: rgba(0, 0, 0, 0.13);
+			-webkit-box-shadow: inset006pxrgba(0, 0, 0, 0.13);
 		}
 
 		::-webkit-scrollbar-thumb:window-inactive {
-			background: rgba(255, 0, 0, 0.4);
+			background: rgba(255, 0, 0, 0.13);
+		}
+
+		div.jsoneditor-value.jsoneditor-string {
+			color: #05d105;
+		}
+
+		a.jsoneditor-value.jsoneditor-url,
+		div.jsoneditor-value.jsoneditor-url {
+			color: #05d105;
 		}
 	</style>
 </head>
@@ -77,7 +87,7 @@
 			// create the editor
 			const container = document.getElementById("jsoneditor")
 			const options = {
-				mode: 'tree',
+				mode: 'view',
 			}
 			const editor = new JSONEditor(container, options)
 			// set json
@@ -105,16 +115,22 @@
 
 
 			let jsonConvert = (j) => {
-			 
+
 				Object.keys(j).forEach(key => {
 					if (typeof j[key] == 'string') {
 						try {
-							if(typeof j[key] == 'string'){
-								j[key] == j[key]
-							}else{
+							if (typeof j[key] == 'string') {
+								if (isNaN(parseInt(j[key]))) {
+									j[key] = JSON.parse(j[key])
+
+								} else {
+									j[key] == j[key]
+
+								}
+							} else {
 								j[key] = JSON.parse(j[key])
 							}
-							
+
 						} catch (error) {
 						}
 
