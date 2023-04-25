@@ -105,11 +105,16 @@
 
 
 			let jsonConvert = (j) => {
-				console.log(3);
+			 
 				Object.keys(j).forEach(key => {
 					if (typeof j[key] == 'string') {
 						try {
-							j[key] = JSON.parse(j[key])
+							if(typeof j[key] == 'string'){
+								j[key] == j[key]
+							}else{
+								j[key] = JSON.parse(j[key])
+							}
+							
 						} catch (error) {
 						}
 
