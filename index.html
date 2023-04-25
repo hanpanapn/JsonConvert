@@ -107,6 +107,7 @@
 					console.log('jsonStr.value', JSON.parse(jsonStr.value));
 					let a = jsonConvert(JSON.parse(jsonStr.value));
 					editor.set(a)
+					layer.tips('JSON转换成功', '#jsonStr')
 				} catch (error) {
 					layer.tips('JSON转换失败', '#jsonStr')
 					editor.set({})
